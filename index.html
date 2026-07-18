@@ -93,7 +93,8 @@ nav.stuck .nav-hamburger span{background:var(--ink);}
 .bdot{width:6px;height:6px;background:var(--mint);border-radius:50%;animation:ping 1.5s infinite;}
 @keyframes ping{0%,100%{transform:scale(1);}50%{transform:scale(1.9);opacity:.3;}}
 .hero-name{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(4rem,9vw,8.5rem);line-height:.88;letter-spacing:-.04em;margin-bottom:1.5rem;}
-.hero-name .line{overflow:hidden;display:block;padding:0.12em 0;margin:-0.12em 0;}
+.hero-name .line{overflow:hidden;display:block;}
+.hero-name.anim-done .line{overflow:visible;}
 .hero-name .word{display:inline-block;transform:translateY(110%);opacity:0;}
 .hero-name .w1{animation:wup .8s cubic-bezier(.76,0,.24,1) 1.8s forwards;}
 .hero-name .w2{animation:wup .8s cubic-bezier(.76,0,.24,1) 1.95s forwards;-webkit-text-stroke:2.5px var(--ink);color:transparent;transition:color .3s,-webkit-text-stroke-color .3s;}
@@ -539,7 +540,7 @@ section[id]{scroll-margin-top:90px;}
 .cb1{width:500px;height:500px;background:var(--pink);top:-150px;left:-100px;}
 .cb2{width:400px;height:400px;background:var(--lav);bottom:-100px;right:-100px;animation-delay:3s;}
 .c-eye{font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--mint);margin-bottom:1rem;}
-.c-hl{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(3rem,9vw,8rem);letter-spacing:-.04em;line-height:.98;color:var(--white);margin-bottom:.5rem;}
+.c-hl{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.3rem,9vw,8rem);letter-spacing:-.04em;line-height:1.05;color:var(--white);margin-bottom:.5rem;overflow-wrap:break-word;word-break:break-word;}
 .c-hl .pop{color:var(--pink);}
 .c-hl .ghost{-webkit-text-stroke:2px rgba(255,255,255,.2);color:transparent;display:block;}
 .c-sub{font-size:.78rem;color:rgba(255,255,255,.25);margin-bottom:3rem;letter-spacing:.04em;white-space:nowrap;}
@@ -636,14 +637,15 @@ footer{background:var(--ink);padding:1.2rem 4rem;display:flex;justify-content:sp
 
   /* Brands logo grid */
   .brands-with-inner{padding:0 1.4rem;}
-  .brands-logo-grid{grid-template-columns:repeat(3,1fr);gap:.4rem;}
-  .brand-logo-card{padding:.8rem .5rem;}
+  .brands-logo-grid{grid-template-columns:repeat(3,1fr);gap:.3rem;}
+  .brand-logo-card,
+  .brands-with-sec .brand-logo-card{padding:.7rem .3rem;}
   .brand-logo-card img,
-  .brands-with-sec .brand-logo-card img{height:auto;max-height:52px;width:auto;max-width:88%;}
+  .brands-with-sec .brand-logo-card img{height:auto;max-height:46px;width:auto;max-width:85%;}
 
   /* Projects */
-  .proj-statics-grid{columns:2;column-gap:.5rem;}
-  .proj-videos-grid{columns:2;column-gap:.5rem;}
+  .proj-statics-grid{columns:2;column-gap:.5rem;column-fill:auto;}
+  .proj-videos-grid{columns:2;column-gap:.5rem;column-fill:auto;}
   .pvg-item{margin-bottom:.5rem;}
   .psg-item{margin-bottom:.5rem;}
 
@@ -666,8 +668,10 @@ footer{background:var(--ink);padding:1.2rem 4rem;display:flex;justify-content:sp
 
 @media(max-width:480px){
   .brands-logo-grid{grid-template-columns:repeat(2,1fr);}
+  .brand-logo-card,
+  .brands-with-sec .brand-logo-card{padding:.6rem .3rem;}
   .brand-logo-card img,
-  .brands-with-sec .brand-logo-card img{max-height:44px;}
+  .brands-with-sec .brand-logo-card img{max-height:40px;}
   .proj-statics-grid{columns:2;}
   .proj-videos-grid{columns:2;}
   .hero-name{font-size:clamp(2.2rem,13vw,4rem);}
@@ -1013,6 +1017,12 @@ window.addEventListener('load',function(){
     startTW();
     initCounters();
   },1600);
+  // Name entrance animation finishes ~2.75s after load; release the clip mask
+  // used for the slide-up reveal so descenders/ascenders are never cut off.
+  setTimeout(function(){
+    var hn=document.querySelector('.hero-name');
+    if(hn)hn.classList.add('anim-done');
+  },3000);
 });
 
 // ── CURSOR + MOUSE GLOW ──
@@ -1291,6 +1301,12 @@ var presetMedia={
     var isLand=m.aspect==='16/9';
     var item=document.createElement('div');
     item.className='pvg-item '+(isLand?'landscape':'portrait');
+    // Force this specific tile to start a new column so it lands on the
+    // right side of the mobile mosaic, deterministically across browsers.
+    if(m.src===v_stives3){
+      item.style.breakBefore='column';
+      item.style.webkitColumnBreakBefore='always';
+    }
 
     // Single video element: browsers natively render the frame at the given
     // timestamp as a static "poster" when the src has a #t= fragment and
@@ -1350,7 +1366,7 @@ function lbRender(){
     var wrapper=document.createElement('div');
     if(isMobile){
       wrapper.style.cssText=isLandscape
-        ?'position:relative;width:96vw;border-radius:8px;overflow:hidden;background:#000;'
+        ?'position:relative;width:96vw;height:calc(96vw*9/16);max-height:60vh;margin:0 auto;border-radius:8px;overflow:hidden;background:#000;'
         :'position:relative;width:min(80vw,calc(88vh*9/16));height:min(88vh,calc(80vw*16/9));border-radius:8px;overflow:hidden;background:#000;';
     } else {
       wrapper.style.cssText=isLandscape
