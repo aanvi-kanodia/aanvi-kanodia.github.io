@@ -93,7 +93,7 @@ nav.stuck .nav-hamburger span{background:var(--ink);}
 .bdot{width:6px;height:6px;background:var(--mint);border-radius:50%;animation:ping 1.5s infinite;}
 @keyframes ping{0%,100%{transform:scale(1);}50%{transform:scale(1.9);opacity:.3;}}
 .hero-name{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(4rem,9vw,8.5rem);line-height:.88;letter-spacing:-.04em;margin-bottom:1.5rem;}
-.hero-name .line{overflow:hidden;display:block;}
+.hero-name .line{overflow:hidden;display:block;padding:0.12em 0;margin:-0.12em 0;}
 .hero-name .word{display:inline-block;transform:translateY(110%);opacity:0;}
 .hero-name .w1{animation:wup .8s cubic-bezier(.76,0,.24,1) 1.8s forwards;}
 .hero-name .w2{animation:wup .8s cubic-bezier(.76,0,.24,1) 1.95s forwards;-webkit-text-stroke:2.5px var(--ink);color:transparent;transition:color .3s,-webkit-text-stroke-color .3s;}
@@ -462,24 +462,12 @@ section[id]{scroll-margin-top:90px;}
 /* portrait — same aspect ratio as 9:16 photos */
 .pvg-item.portrait{aspect-ratio:9/16;}
 
-/* video hidden by default, fades in on hover */
+/* video shows its own first-frame as a poster by default (via #t= url fragment), plays on hover */
 .pvg-item video{
   position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;border-radius:12px;
-  opacity:0;transition:opacity .4s;
-  z-index:0;
+  z-index:0;background:#111;
 }
-.pvg-item:hover video{opacity:1;}
-
-/* poster always visible, fades on hover */
-.pvg-poster{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;border-radius:12px;
-  pointer-events:none;
-  transition:opacity .4s;
-  z-index:1;
-}
-.pvg-item:hover .pvg-poster{opacity:0;}
 
 /* play icon — always visible, centered, fades on hover */
 .pvg-play-ic{
@@ -545,13 +533,13 @@ section[id]{scroll-margin-top:90px;}
 .v-text{font-size:.9rem;color:var(--muted);line-height:1.9;}
 
 /* CONTACT */
-.contact{background:var(--ink);text-align:center;padding:8rem 4rem;position:relative;overflow:hidden;}
+.contact{background:var(--ink);text-align:center;padding:8rem 4rem;position:relative;overflow-x:hidden;overflow-y:visible;}
 .c-blobs{position:absolute;inset:0;pointer-events:none;}
 .c-blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.1;animation:bd 10s ease-in-out infinite alternate;}
 .cb1{width:500px;height:500px;background:var(--pink);top:-150px;left:-100px;}
 .cb2{width:400px;height:400px;background:var(--lav);bottom:-100px;right:-100px;animation-delay:3s;}
 .c-eye{font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--mint);margin-bottom:1rem;}
-.c-hl{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(3rem,9vw,8rem);letter-spacing:-.04em;line-height:.9;color:var(--white);margin-bottom:.5rem;}
+.c-hl{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(3rem,9vw,8rem);letter-spacing:-.04em;line-height:.98;color:var(--white);margin-bottom:.5rem;}
 .c-hl .pop{color:var(--pink);}
 .c-hl .ghost{-webkit-text-stroke:2px rgba(255,255,255,.2);color:transparent;display:block;}
 .c-sub{font-size:.78rem;color:rgba(255,255,255,.25);margin-bottom:3rem;letter-spacing:.04em;white-space:nowrap;}
@@ -585,7 +573,7 @@ footer{background:var(--ink);padding:1.2rem 4rem;display:flex;justify-content:sp
 .nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
 .nav-hamburger.open span:nth-child(2){opacity:0;}
 .nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-.nav-mobile-menu{display:none;position:fixed;inset:0;background:var(--bg);z-index:680;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;}
+.nav-mobile-menu{display:none;position:fixed;inset:0;height:100vh;height:100dvh;background:var(--bg);z-index:680;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;}
 .nav-mobile-menu.open{display:flex;animation:lbF .2s ease;}
 .nav-mobile-menu a{font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;color:var(--ink);text-decoration:none;letter-spacing:-.02em;transition:color .2s;}
 .nav-mobile-menu a:hover{color:var(--pink);}
@@ -604,9 +592,10 @@ footer{background:var(--ink);padding:1.2rem 4rem;display:flex;justify-content:sp
   /* Hero */
   .hero{grid-template-columns:1fr;gap:2rem;padding:5.5rem 1.4rem 3rem;min-height:auto;text-align:center;}
   .hero-photo-side{order:-1;}
-  .hero-photo{width:min(200px,50vw);}
+  .hero-photo{width:min(160px,42vw);}
   .hero-name{font-size:clamp(2.4rem,13vw,4.5rem);}
-  .hero-name-row{justify-content:center;}
+  .hero-text{display:flex;flex-direction:column;align-items:center;}
+  .hero-name-row{justify-content:center;align-items:center;}
   .hero-btns{justify-content:center;flex-wrap:wrap;}
   .hero-tagline{margin:0 auto 2rem;}
   .sticker{display:none;}
@@ -625,7 +614,7 @@ footer{background:var(--ink);padding:1.2rem 4rem;display:flex;justify-content:sp
 
   /* Quote */
   .quote-sec{padding:3.5rem 1.4rem;}
-  .q-ghost{font-size:4rem;}
+  .q-ghost{font-size:clamp(2.2rem,13vw,4rem);}
 
   /* How */
   .how{grid-template-columns:1fr;gap:2.5rem;}
@@ -647,9 +636,10 @@ footer{background:var(--ink);padding:1.2rem 4rem;display:flex;justify-content:sp
 
   /* Brands logo grid */
   .brands-with-inner{padding:0 1.4rem;}
-  .brands-logo-grid{grid-template-columns:repeat(3,1fr);}
-  .brand-logo-card{padding:1rem 1.2rem;}
-  .brand-logo-card img{height:80px;max-width:120px;}
+  .brands-logo-grid{grid-template-columns:repeat(3,1fr);gap:.4rem;}
+  .brand-logo-card{padding:.8rem .5rem;}
+  .brand-logo-card img,
+  .brands-with-sec .brand-logo-card img{height:auto;max-height:52px;width:auto;max-width:88%;}
 
   /* Projects */
   .proj-statics-grid{columns:2;column-gap:.5rem;}
@@ -676,17 +666,17 @@ footer{background:var(--ink);padding:1.2rem 4rem;display:flex;justify-content:sp
 
 @media(max-width:480px){
   .brands-logo-grid{grid-template-columns:repeat(2,1fr);}
+  .brand-logo-card img,
+  .brands-with-sec .brand-logo-card img{max-height:44px;}
   .proj-statics-grid{columns:2;}
   .proj-videos-grid{columns:2;}
   .hero-name{font-size:clamp(2.2rem,13vw,4rem);}
 }
 
 @media(max-width:768px){
-  /* Simpler, cleaner single-column video layout on mobile */
-  .proj-videos-grid{columns:1;column-gap:0;}
-  .pvg-item{width:100%;margin-bottom:1rem;}
-  .pvg-item.portrait{aspect-ratio:9/16;max-width:280px;margin-left:auto;margin-right:auto;}
-  .pvg-play-ic::after{width:44px;height:44px;font-size:1.1rem;}
+  /* Keep the same mosaic grid as the photos — just no play-button overlay on touch,
+     since there's no hover state to fade it out and it ends up stuck on screen */
+  .pvg-play-ic{display:none;}
 }
 </style>
 </head>
@@ -1302,63 +1292,22 @@ var presetMedia={
     var item=document.createElement('div');
     item.className='pvg-item '+(isLand?'landscape':'portrait');
 
-    // Thumbnail canvas — captures first frame of video as cover image
-    var thumb=document.createElement('img');
-    thumb.className='pvg-poster';thumb.alt='';
-    thumb.style.background='#111';
-    item.appendChild(thumb);
-
-    // Invisible video used ONLY to grab the first frame
-    var snapVid=document.createElement('video');
-    snapVid.src=m.src;snapVid.muted=true;snapVid.playsInline=true;
-    snapVid.preload='metadata';snapVid.currentTime=0.001;
-    snapVid.style.cssText='position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;';
-    item.appendChild(snapVid);
-
-    var frameTries=[0.001,1,2,4];
-    var frameIdx=0;
-
-    function isBlackFrame(cvs){
-      try{
-        var ctx=cvs.getContext('2d');
-        var d=ctx.getImageData(0,0,cvs.width,cvs.height).data;
-        var total=0,sample=Math.max(1,Math.floor(d.length/4/200));
-        for(var p=0;p<d.length;p+=4*sample){total+=d[p]+d[p+1]+d[p+2];}
-        var avg=total/(d.length/4/sample*3);
-        return avg<15||avg>240;
-      }catch(e){return false;}
-    }
-
-    function captureFrame(){
-      try{
-        var cvs=document.createElement('canvas');
-        cvs.width=snapVid.videoWidth||320;
-        cvs.height=snapVid.videoHeight||180;
-        cvs.getContext('2d').drawImage(snapVid,0,0,cvs.width,cvs.height);
-        if(isBlackFrame(cvs)&&frameIdx<frameTries.length-1){
-          frameIdx++;
-          snapVid.addEventListener('seeked',captureFrame,{once:true});
-          snapVid.currentTime=frameTries[frameIdx];
-          return;
-        }
-        var url=cvs.toDataURL('image/jpeg',0.85);
-        if(url&&url.length>100){thumb.src=url;}
-        snapVid.remove();
-      }catch(e){snapVid.remove();}
-    }
-    snapVid.addEventListener('seeked',captureFrame,{once:true});
-    snapVid.addEventListener('loadeddata',function(){snapVid.currentTime=frameTries[0];},{once:true});
-
-    // Playback video (hidden until hover)
+    // Single video element: browsers natively render the frame at the given
+    // timestamp as a static "poster" when the src has a #t= fragment and
+    // preload is metadata/auto — no autoplay needed. Plays on hover/tap.
     var vid=document.createElement('video');
-    vid.src=m.src;vid.muted=true;vid.loop=true;vid.playsInline=true;vid.preload='none';
+    vid.src=m.src+'#t=0.1';
+    vid.muted=true;vid.loop=true;vid.playsInline=true;vid.preload='metadata';
     item.appendChild(vid);
 
-    // Play icon overlay
+    // Play icon overlay (hidden on mobile via CSS — no hover to fade it out there)
     var ic=document.createElement('div');ic.className='pvg-play-ic';item.appendChild(ic);
 
     item.addEventListener('mouseenter',function(){vid.play().catch(function(){});});
-    item.addEventListener('mouseleave',function(){vid.pause();vid.currentTime=0;});
+    item.addEventListener('mouseleave',function(){
+      vid.pause();
+      try{vid.currentTime=0.1;}catch(e){}
+    });
     item.addEventListener('click',function(){
       lbItems=videoLbItems;lbIndex=i;
       lbRender();document.getElementById('lightbox').classList.add('open');
